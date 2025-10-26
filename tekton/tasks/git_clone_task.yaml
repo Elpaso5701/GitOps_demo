@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-clone
+spec:
+  params:
+    - name: url
+      type: string
+    - name: revision
+      type: string
+      
+  workspaces:
+    - name: source
+      description: Workspace where the source code will be cloned
+
+  steps:
+    - name: clone
+      image: alpine/git
+      env:
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: git-secret
+              key: token
+      script: |
+      # Налаштування автентифікації через токен
+        git config --global credential.helper 'store --file=/tmp/.git-credentials'
+        echo "https://$(GIT_TOKEN):x-oauth-basic@github.com" > /tmp/.git-credentials
+        # Клонування з використанням параметра url
+        git clone $(params.url) source
+        cd source
+        git checkout $(params.revision)
+
+        

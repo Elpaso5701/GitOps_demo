@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-app
+spec:
+  params:
+    - name: image
+      type: string
+
+  workspaces:
+    - name: source
+      description: Workspace where the source code will be cloned
+
+  steps:
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:latest
+      env:
+        - name: DOCKER_CONFIG
+          value: $(workspaces.dockerconfig.path)
+      script: |
+        #!/busybox/sh
+        set -eux
+        cd $(workspaces.source.path)/source
+        /kaniko/executor \
+          --destination=$(params.image) \
+          --context=. \
+          --dockerfile=./Dockerfile \
+          --snapshotMode=redo
