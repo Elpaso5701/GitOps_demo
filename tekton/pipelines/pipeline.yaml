@@ -40,6 +40,4 @@ spec:
       workspaces:
         - name: source
         - name: dockerconfig
-          secret:
-            secretName: dockerhub-secret
           

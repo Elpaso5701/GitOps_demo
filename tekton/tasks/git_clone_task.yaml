@@ -23,7 +23,7 @@ spec:
               name: git-secret
               key: token
       script: |
-      # Налаштування автентифікації через токен
+        # Налаштування автентифікації через токен
         git config --global credential.helper 'store --file=/tmp/.git-credentials'
         echo "https://$(GIT_TOKEN):x-oauth-basic@github.com" > /tmp/.git-credentials
         # Клонування з використанням параметра url
