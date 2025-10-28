@@ -72,4 +72,5 @@ spec:
         git diff --cached
         echo "================"
         git commit -m "Update image tag to $(params.image) for $(params.env)"
+        git pull --rebase origin main
         git push https://$GIT_TOKEN@github.com/Elpaso5701/GitOps_demo.git HEAD:main

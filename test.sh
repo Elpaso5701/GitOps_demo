@@ -16,7 +16,7 @@ read -r -d '' PAYLOAD << EOM
     "name": "gitops_demo"
   },
   "head_commit": {
-    "id": "60c2013c4507880bced634c9cb282797639d720f"
+    "id": "d61aea02dbe0f3184f25b16a8f0efcdc039854b8"
   }
 }
 EOM
