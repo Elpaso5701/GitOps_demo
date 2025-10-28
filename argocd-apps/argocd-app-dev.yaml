@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: flask-dev
+  namespace: argocd
+spec:
+
+  destination:
+    namespace: dev
+    server: https://kubernetes.default.svc
+
+  project: default
+  source:
+    path: k8s/overlays/dev
+    repoURL: https://github.com/Elpaso5701/GitOps_demo.git
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+

@@ -18,8 +18,7 @@ spec:
   workspaces:
     - name: source 
     - name: dockerconfig
-    - name: manifests
-
+ 
   tasks:
     - name: clone-repo
       taskRef:
@@ -62,7 +61,7 @@ spec:
         - name: revision
           value: $(params.revision)
       workspaces:
-        - name: manifests
+        - name: source
           workspace: source
 
     - name: update-qa
@@ -79,5 +78,5 @@ spec:
         - name: revision
           value: $(params.revision)
       workspaces:
-        - name: manifests
+        - name: source
           workspace: source      

@@ -15,8 +15,41 @@ spec:
     - name: update-image
       image: mikefarah/yq:4
       workingDir: $(workspaces.source.path)/k8s/overlays/$(params.env)
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
       script: |
-        yq e '.spec.template.spec.containers[0].image = "$(params.image)"' -i deployment-patch.yaml
+         #!/bin/sh
+          set -ex
+          
+          echo "=== Debug Info ==="
+          echo "PWD: $(pwd)"
+          echo "Environment: $(params.env)"
+          echo "New Image: $(params.image)"
+          echo ""
+          
+          echo "Listing files in current directory:"
+          ls -al
+          echo ""
+          
+          echo "Current deployment-patch.yaml content:"
+          cat deployment-patch.yaml
+          echo ""
+          
+          echo "=== Updating Image Tag ==="
+
+          chmod 644 deployment-patch.yaml
+          # Update the image using yq
+          yq eval '.spec.template.spec.containers[0].image = "$(params.image)"' -i deployment-patch.yaml
+          
+          echo ""
+          echo "=== Updated deployment-patch.yaml content ==="
+          cat deployment-patch.yaml
+          echo ""
+          
+          echo "✅ Successfully updated image to: $(params.image)"
+          echo "==================="
+
     - name: git-commit-push
       image: alpine/git
       workingDir: $(workspaces.source.path)
@@ -24,7 +57,7 @@ spec:
         - name: GIT_USER
           value: "ci-bot"
         - name: GIT_EMAIL
-          value: "ci-bot@example.com"
+          value: "tentacool5701@gmail.com"
         - name: GIT_TOKEN
           valueFrom:
             secretKeyRef:
@@ -34,5 +67,9 @@ spec:
         git config --global user.name "$GIT_USER"
         git config --global user.email "$GIT_EMAIL"
         git add k8s/overlays/$(params.env)/deployment-patch.yaml
+        echo ""
+        echo "=== Git Diff ==="
+        git diff --cached
+        echo "================"
         git commit -m "Update image tag to $(params.image) for $(params.env)"
         git push https://$GIT_TOKEN@github.com/Elpaso5701/GitOps_demo.git HEAD:main
