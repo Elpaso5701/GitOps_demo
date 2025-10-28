@@ -18,6 +18,8 @@ spec:
   workspaces:
     - name: source 
     - name: dockerconfig
+    - name: manifests
+
   tasks:
     - name: clone-repo
       taskRef:
@@ -45,3 +47,37 @@ spec:
           workspace: source
         - name: dockerconfig
           workspace: dockerconfig
+
+    - name: update-dev
+      runAfter: [build]
+      taskRef:
+        name: update-image-tag
+      params:
+        - name: image
+          value: $(params.image)
+        - name: env
+          value: dev
+        - name: repo-url
+          value: $(params.repo-url)
+        - name: revision
+          value: $(params.revision)
+      workspaces:
+        - name: manifests
+          workspace: manifests
+
+    - name: update-qa
+      runAfter: [update-dev]
+      taskRef:
+        name: update-image-tag
+      params:
+        - name: image
+          value: $(params.image)
+        - name: env
+          value: qa
+        - name: repo-url
+          value: $(params.repo-url)
+        - name: revision
+          value: $(params.revision)
+      workspaces:
+        - name: manifests
+          workspace: manifests      

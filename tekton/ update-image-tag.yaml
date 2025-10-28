@@ -1,0 +1,38 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: update-image-tag
+spec:
+  params:
+    - name: image
+      type: string
+    - name: env
+      type: string
+  workspaces:
+    - name: manifests
+      description: "Workspace with k8s manifests"
+  steps:
+    - name: update-image
+      image: mikefarah/yq:4
+      workingDir: $(workspaces.manifests.path)/k8s/overlays/$(params.env)
+      script: |
+        yq e '.spec.template.spec.containers[0].image = "$(params.image)"' -i deployment-patch.yaml
+    - name: git-commit-push
+      image: alpine/git
+      workingDir: $(workspaces.manifests.path)
+      env:
+        - name: GIT_USER
+          value: "ci-bot"
+        - name: GIT_EMAIL
+          value: "ci-bot@example.com"
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: git-secret
+              key: token
+      script: |
+        git config --global user.name "$GIT_USER"
+        git config --global user.email "$GIT_EMAIL"
+        git add k8s/overlays/$(params.env)/deployment-patch.yaml
+        git commit -m "Update image tag to $(params.image) for $(params.env)"
+        git push https://$GIT_TOKEN@github.com/Elpaso5701/GitOps_demo.git HEAD:main

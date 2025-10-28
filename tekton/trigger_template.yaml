@@ -38,7 +38,10 @@ spec:
               claimName: tekton-workspace-pvc
           - name: dockerconfig
             secret:
-              secretName: dockerhub-secret   
+              secretName: dockerhub-secret
+          - name: manifests
+            persistentVolumeClaim:
+            claimName: tekton-manifests-pvc       
         podTemplate:
           securityContext:
             fsGroup: 65532
