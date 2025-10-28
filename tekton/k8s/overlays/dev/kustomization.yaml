@@ -1,6 +1,0 @@
-resources:
-  - ../../base/deployment.yaml
-  - ../../base/service.yaml
-
-patchesStrategicMerge:
-  - deployment-patch.yaml
