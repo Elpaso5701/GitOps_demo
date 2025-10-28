@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitops-demo
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: gitops-demo
+          image: elpaso5701/gitops_demo:latest  # Tekton может менять этот тег!
