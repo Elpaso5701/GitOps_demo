@@ -1,0 +1,19 @@
+apiVersion: istio.io/v1
+kind: VirtualService
+metadata:
+  name: tekton-eventlistener-vs
+  namespace: default
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - tekton-gateway
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: el-github-listener.default.svc.cluster.local
+            port:
+              number: 8080

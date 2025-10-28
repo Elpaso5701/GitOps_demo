@@ -11,4 +11,6 @@ spec:
     - name: branch
       value: "$(body.ref)"
     - name: image
-      value: "$(body.repository.full_name):$(body.head_commit.id)"
+      value: "elpaso5701/$(body.repository.name):$(body.head_commit.id)"
+    - name: image-latest
+      value: "elpaso5701/$(body.repository.name):latest"  

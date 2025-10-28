@@ -1,0 +1,54 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-clone
+spec:
+  params:
+    - name: repo-url
+      type: string
+    - name: revision
+      type: string
+      
+  workspaces:
+    - name: source
+      description: Workspace where the source code will be cloned
+
+  steps:
+    - name: clone
+      image: alpine/git
+      workingDir: $(workspaces.source.path)
+      env:
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: git-secret
+              key: token
+        - name: REPO_URL
+          value: $(params.repo-url)
+        - name: REVISION
+          value: $(params.revision)
+      script: |
+        set -e
+        
+        if [ -z "${GIT_TOKEN}" ]; then
+          echo "ERROR: GIT_TOKEN is empty!"
+          exit 1
+        fi
+        
+        if [ -z "${REPO_URL}" ]; then
+          echo "ERROR: REPO_URL is empty!"
+          exit 1
+        fi
+        
+        REPO_PATH=$(echo "${REPO_URL}" | sed 's|https://||' | sed 's|http://||')
+        AUTH_URL="https://${GIT_TOKEN}@${REPO_PATH}"
+        
+        echo "Attempting to clone..."
+        echo "Target directory: /tmp/repo"
+      
+        git clone "${AUTH_URL}" /tmp/repo 2>&1 
+        cd /tmp/repo
+        git checkout "${REVISION}"
+        
+        cp -r /tmp/repo/. $(workspaces.source.path)/
+       

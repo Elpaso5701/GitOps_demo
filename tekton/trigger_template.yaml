@@ -9,6 +9,7 @@ spec:
     - name: revision
     - name: branch
     - name: image
+    - name: image-latest
 
   resourcetemplates:
     # Створюємо PipelineRun з параметрами
@@ -22,16 +23,23 @@ spec:
         params:
           # Використовуємо параметри з TriggerBinding
           - name: repo-url
-            value: $(params.repo-url)
+            value: $(tt.params.repo-url)
           - name: revision
-            value: $(params.revision)
+            value: $(tt.params.revision)
           - name: branch
-            value: $(params.branch)
+            value: $(tt.params.branch)
           - name: image
-            value: $(params.image)
-      workspaces:
+            value: $(tt.params.image)
+          - name: image-latest
+            value: $(tt.params.image-latest)  
+        workspaces:
           - name: source
-            emptyDir: {}
+            persistentVolumeClaim:
+              claimName: tekton-workspace-pvc
           - name: dockerconfig
             secret:
-              secretName: dockerhub-secret      
+              secretName: dockerhub-secret   
+        podTemplate:
+          securityContext:
+            fsGroup: 65532
+         
