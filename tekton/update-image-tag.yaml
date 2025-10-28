@@ -9,17 +9,17 @@ spec:
     - name: env
       type: string
   workspaces:
-    - name: manifests
+    - name: source
       description: "Workspace with k8s manifests"
   steps:
     - name: update-image
       image: mikefarah/yq:4
-      workingDir: $(workspaces.manifests.path)/k8s/overlays/$(params.env)
+      workingDir: $(workspaces.source.path)/k8s/overlays/$(params.env)
       script: |
         yq e '.spec.template.spec.containers[0].image = "$(params.image)"' -i deployment-patch.yaml
     - name: git-commit-push
       image: alpine/git
-      workingDir: $(workspaces.manifests.path)
+      workingDir: $(workspaces.source.path)
       env:
         - name: GIT_USER
           value: "ci-bot"

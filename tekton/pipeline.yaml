@@ -63,7 +63,7 @@ spec:
           value: $(params.revision)
       workspaces:
         - name: manifests
-          workspace: manifests
+          workspace: source
 
     - name: update-qa
       runAfter: [update-dev]
@@ -80,4 +80,4 @@ spec:
           value: $(params.revision)
       workspaces:
         - name: manifests
-          workspace: manifests      
+          workspace: source      
