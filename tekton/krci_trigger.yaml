@@ -22,4 +22,16 @@ spec:
       params:
         - name: "filter"
           value: "body.ref == 'refs/heads/main'"
+        - name: overlays
+          value:
+           
+            - key: repo_url_lower
+              expression: "body.repository.clone_url.lowerAscii()"
+          
+            - key: repo_name_lower
+              expression: "body.repository.name.lowerAscii()"
+           
+            - key: repo_fullname_lower
+              expression: "body.repository.full_name.lowerAscii()"  
+      
      

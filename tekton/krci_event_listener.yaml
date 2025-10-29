@@ -5,8 +5,4 @@ metadata:
 spec:
   serviceAccountName: tekton-triggers-sa
   triggers:
-    - name: github-push
-      bindings:
-        - ref: github-push-binding
-      template:
-        ref: github-push-template
+    - triggerRef: github-push-trigger

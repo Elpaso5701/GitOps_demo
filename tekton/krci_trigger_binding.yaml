@@ -3,14 +3,31 @@ kind: TriggerBinding
 metadata:
   name: github-push-binding
 spec:
+  # params:
+  #   - name: repo-url
+  #     value: "$(body.repository.clone_url)"
+  #   - name: revision
+  #     value: "$(body.head_commit.id)"
+  #   - name: branch
+  #     value: "$(body.ref)"
+  #   - name: image
+  #     value: "elpaso5701/$(body.repository.name):$(body.head_commit.id)"
+  #   - name: image-latest
+  #     value: "elpaso5701/$(body.repository.name):latest"  
   params:
+    # Используем lowercase значение из CEL
     - name: repo-url
-      value: "$(body.repository.clone_url)"
+      value: "$(extensions.repo_url_lower)"
+    
     - name: revision
       value: "$(body.head_commit.id)"
+    
     - name: branch
       value: "$(body.ref)"
+    
+    # Используем lowercase имя репозитория
     - name: image
-      value: "elpaso5701/{{- lower .body.repository.name }}:$(body.head_commit.id)"
+      value: "elpaso5701/$(extensions.repo_name_lower):$(body.head_commit.id)"
+    
     - name: image-latest
-      value: "elpaso5701/{{- lower .body.repository.name }}:latest"  
+      value: "elpaso5701/$(extensions.repo_name_lower):latest"
