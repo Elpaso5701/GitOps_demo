@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     path: k8s/overlays/dev
-    repoURL: https://github.com/Elpaso5701/GitOps_demo.git
+    repoURL: https://github.com/Elpaso5701/manifests.git
 
   syncPolicy:
     automated:
