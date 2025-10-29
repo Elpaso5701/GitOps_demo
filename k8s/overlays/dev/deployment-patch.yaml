@@ -6,8 +6,8 @@ spec:
   replicas: 1
   template:
     spec:
-     imagePullSecrets:
-        - name: dockerhub-secret 
-     containers:
+      imagePullSecrets:
+        - name: dockerhub-secret
+      containers:
         - name: gitops-demo
-          image: elpaso5701/gitops_demo:latest  # Tekton может менять этот тег!
+          image: elpaso5701/gitops_demo:3ff0d3dfacf3274b7f57b4195f71f297409a72f2 # Tekton может менять этот тег!
