@@ -30,16 +30,6 @@ spec:
       script: |
         set -e
         
-        if [ -z "${GIT_TOKEN}" ]; then
-          echo "ERROR: GIT_TOKEN is empty!"
-          exit 1
-        fi
-        
-        if [ -z "${REPO_URL}" ]; then
-          echo "ERROR: REPO_URL is empty!"
-          exit 1
-        fi
-        
         REPO_PATH=$(echo "${REPO_URL}" | sed 's|https://||' | sed 's|http://||')
         AUTH_URL="https://${GIT_TOKEN}@${REPO_PATH}"
         
@@ -47,15 +37,3 @@ spec:
         git clone "${AUTH_URL}" .
         git checkout "${REVISION}"
        
-        echo ""
-        echo "=== Debug: List overlays/dev ==="
-        ls -al k8s/overlays/dev || echo "No dev overlay"
-        echo ""
-        echo "=== Debug: List overlays/qa ==="
-        ls -al k8s/overlays/qa || echo "No qa overlay"
-        echo ""
-        echo "=== Debug: List overlays ==="
-        ls -al k8s/overlays || echo "No overlays dir"
-        echo ""
-        echo "=== Debug: List repo root ==="
-        ls -al

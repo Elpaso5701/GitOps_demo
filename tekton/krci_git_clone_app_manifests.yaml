@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-clone-manifests
+spec:
+  params:
+    - name: repo-url
+      type: string
+    - name: revision
+      type: string
+  workspaces:
+    - name: manifests
+      description: "Workspace for ArgoCD manifests"
+  steps:
+    - name: clone
+      image: alpine/git
+      workingDir: $(workspaces.manifests.path)
+      env:
+        - name: GIT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: git-secret
+              key: token
+        - name: REPO_URL
+          value: $(params.repo-url)
+        - name: REVISION
+          value: $(params.revision)
+      script: |
+        set -e
+        REPO_PATH=$(echo "${REPO_URL}" | sed 's|https://||' | sed 's|http://||')
+        AUTH_URL="https://${GIT_TOKEN}@${REPO_PATH}"
+        echo "Cloning manifests repo into $(pwd)..."
+        git clone "${AUTH_URL}" .
+        git checkout "${REVISION}"
+        echo "=== Debug: List overlays/dev ==="
+        ls -al k8s/overlays/dev || echo "No dev overlay"
+        echo "=== Debug: List overlays/qa ==="
+        ls -al k8s/overlays/qa || echo "No qa overlay"
+        echo "=== Debug: List overlays ==="
+        ls -al k8s/overlays || echo "No overlays dir"
+        echo "=== Debug: List repo root ==="
+        ls -al

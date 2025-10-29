@@ -4,7 +4,7 @@ metadata:
   name: github-push-template
 spec:
   params:
-    # Оголошуємо параметри, які прийдуть з TriggerBinding
+
     - name: repo-url
     - name: revision
     - name: branch
@@ -12,7 +12,7 @@ spec:
     - name: image-latest
 
   resourcetemplates:
-    # Створюємо PipelineRun з параметрами
+   
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
@@ -22,7 +22,7 @@ spec:
         pipelineRef:
           name: app-ci-pipeline
         params:
-          # Використовуємо параметри з TriggerBinding
+         
           - name: repo-url
             value: $(tt.params.repo-url)
           - name: revision
@@ -34,6 +34,9 @@ spec:
           - name: image-latest
             value: $(tt.params.image-latest)  
         workspaces:
+          - name: manifests
+            persistentVolumeClaim:
+              claimName: tekton-manifests-pvc
           - name: source
             persistentVolumeClaim:
               claimName: tekton-workspace-pvc

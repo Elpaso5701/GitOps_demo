@@ -1,8 +1,0 @@
-apiVersion: v1
-data:
-  config.json: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJlbHBhc281NzAxIiwicGFzc3dvcmQiOiJkY2tyX3BhdF9OY3BqVzZyTnNhejRSN1ZJUk1FSnNVTU04eTAiLCJlbWFpbCI6InRlbnRhY29vbDU3MDFAZ21haWwuY29tIiwiYXV0aCI6IlpXeHdZWE52TlRjd01UcGtZMnR5WDNCaGRGOU9ZM0JxVnpaeVRuTmhlalJTTjFaSlVrMUZTbk5WVFUwNGVUQT0ifX19
-kind: Secret
-metadata:
-  name: dockerhub-secret
-  namespace: default
-

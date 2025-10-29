@@ -18,6 +18,7 @@ spec:
   workspaces:
     - name: source 
     - name: dockerconfig
+    - name: manifests
  
   tasks:
     - name: clean
@@ -39,6 +40,18 @@ spec:
       workspaces:
         - name: source
           workspace: source
+
+    - name: clone-manifests
+      taskRef:
+        name: git-clone-manifests
+      params:
+        - name: repo-url
+          value: https://github.com/Elpaso5701/manifests.git
+        - name: revision
+          value: $(params.revision)
+      workspaces:
+        - name: manifests
+          workspace: manifests      
 
     - name: build
       runAfter: [clone-repo]
