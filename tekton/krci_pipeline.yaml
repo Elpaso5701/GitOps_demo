@@ -20,7 +20,15 @@ spec:
     - name: dockerconfig
  
   tasks:
+    - name: clean
+      taskRef:
+        name: clean-workspace
+      workspaces:
+        - name: source
+          workspace: source
+
     - name: clone-repo
+      runAfter: [clean]
       taskRef:
         name: git-clone
       params:
