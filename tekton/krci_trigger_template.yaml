@@ -18,6 +18,7 @@ spec:
       metadata:
         generateName: app-build-run-
       spec:
+      
         pipelineRef:
           name: app-ci-pipeline
         params:
