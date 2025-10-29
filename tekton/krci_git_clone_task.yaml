@@ -47,3 +47,15 @@ spec:
         git clone "${AUTH_URL}" .
         git checkout "${REVISION}"
        
+        echo ""
+        echo "=== Debug: List overlays/dev ==="
+        ls -al k8s/overlays/dev || echo "No dev overlay"
+        echo ""
+        echo "=== Debug: List overlays/qa ==="
+        ls -al k8s/overlays/qa || echo "No qa overlay"
+        echo ""
+        echo "=== Debug: List overlays ==="
+        ls -al k8s/overlays || echo "No overlays dir"
+        echo ""
+        echo "=== Debug: List repo root ==="
+        ls -al
