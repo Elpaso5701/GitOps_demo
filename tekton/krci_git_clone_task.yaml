@@ -44,6 +44,6 @@ spec:
         AUTH_URL="https://${GIT_TOKEN}@${REPO_PATH}"
         
         echo "Attempting to clone..."
-        it clone "${AUTH_URL}" .
+        git clone "${AUTH_URL}" .
         git checkout "${REVISION}"
        
