@@ -10,4 +10,4 @@ spec:
         - name: dockerhub-secret
       containers:
         - name: gitops-demo
-          image: elpaso5701/gitops_demo:1d9581e382a330b2871ba8f57f6208c57dbbc37c # Tekton может менять этот тег!
+          image: elpaso5701/gitops_demo:3452250e47a6912f9956d4a59e5304f39e8d14a8 # Tekton может менять этот тег!
