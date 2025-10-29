@@ -12,4 +12,6 @@ spec:
       script: |
         #!/bin/sh
         rm -rf $(workspaces.source.path)/*
+        rm -rf $(workspaces.source.path)/.[!.]* 2>/dev/null || true
+        rm -rf $(workspaces.source.path)/..?* 2>/dev/null || true
         echo "Workspace cleaned."
