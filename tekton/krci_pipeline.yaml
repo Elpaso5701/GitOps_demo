@@ -62,7 +62,7 @@ spec:
         - name: repo-url
           value: https://github.com/Elpaso5701/manifests.git
         - name: revision
-          value: $(params.revision)
+          value: main
       workspaces:
         - name: manifests
           workspace: manifests      
