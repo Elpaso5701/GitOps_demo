@@ -2,10 +2,16 @@ apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
   name: app-ci-pipeline
+  labels:
+    app: gitops-demo
+  annotations:
+    description: "CI pipeline for GitOps demo"
+    owner: "devops-team"  
 spec:
   params:
     - name: repo-url
       type: string
+      description: "URL repo with application code"
     - name: revision
       type: string
     - name: branch
@@ -21,15 +27,22 @@ spec:
     - name: manifests
  
   tasks:
-    - name: clean
+    - name: clean-source
       taskRef:
         name: clean-workspace
       workspaces:
-        - name: source
+        - name: workspace
           workspace: source
 
-    - name: clone-repo
-      runAfter: [clean]
+    - name: clean-manifests
+      taskRef:
+        name: clean-workspace
+      workspaces:
+        - name: workspace
+          workspace: manifests      
+
+    - name: clone-app-repo
+      runAfter: [clean-source]
       taskRef:
         name: git-clone
       params:
@@ -42,6 +55,7 @@ spec:
           workspace: source
 
     - name: clone-manifests
+      runAfter: [clean-manifests]
       taskRef:
         name: git-clone-manifests
       params:
@@ -54,7 +68,7 @@ spec:
           workspace: manifests      
 
     - name: build
-      runAfter: [clone-repo]
+      runAfter: [clone-app-repo]
       taskRef:
         name: build-app
       params:
@@ -69,7 +83,9 @@ spec:
           workspace: dockerconfig
 
     - name: update-dev
-      runAfter: [build]
+      runAfter: [build, clone-manifests]
+      retries: 2 
+      timeout: "20m" 
       taskRef:
         name: update-image-tag
       params:
@@ -79,14 +95,12 @@ spec:
           value: dev
         - name: repo-url
           value: $(params.repo-url)
-        - name: revision
-          value: $(params.revision)
       workspaces:
-        - name: source
-          workspace: source
+        - name: manifests
+          workspace: manifests
 
     - name: update-qa
-      runAfter: [update-dev]
+      runAfter: [build, clone-manifests]
       taskRef:
         name: update-image-tag
       params:
@@ -96,8 +110,6 @@ spec:
           value: qa
         - name: repo-url
           value: $(params.repo-url)
-        - name: revision
-          value: $(params.revision)
       workspaces:
-        - name: source
-          workspace: source      
+        - name: manifests
+          workspace: manifests      

@@ -1,17 +1,24 @@
-# Task для очистки workspace
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: clean-workspace
 spec:
   workspaces:
-    - name: source
+    - name: workspace  
+      description: "Workspace to clean"
   steps:
     - name: clean
-      image: alpine
+      image: alpine:latest
       script: |
         #!/bin/sh
-        rm -rf $(workspaces.source.path)/*
-        rm -rf $(workspaces.source.path)/.[!.]* 2>/dev/null || true
-        rm -rf $(workspaces.source.path)/..?* 2>/dev/null || true
-        echo "Workspace cleaned."
+        set -e
+        
+        echo "=== Cleaning workspace: $(workspaces.workspace.path) ==="
+        
+        rm -rf $(workspaces.workspace.path)/* 2>/dev/null || true
+        
+        rm -rf $(workspaces.workspace.path)/.[!.]* 2>/dev/null || true
+        rm -rf $(workspaces.workspace.path)/..?* 2>/dev/null || true
+        
+        echo "✅ Workspace cleaned successfully"
+        ls -la $(workspaces.workspace.path) || echo "Empty"

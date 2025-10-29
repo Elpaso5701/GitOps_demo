@@ -9,12 +9,12 @@ spec:
     - name: env
       type: string
   workspaces:
-    - name: source
+    - name: manifests
       description: "Workspace with k8s manifests"
   steps:
     - name: update-image
       image: mikefarah/yq:4
-      workingDir: $(workspaces.source.path)/k8s/overlays/$(params.env)
+      workingDir: $(workspaces.manifests.path)/k8s/overlays/$(params.env)
       securityContext:
         runAsUser: 0
         runAsGroup: 0
@@ -24,7 +24,7 @@ spec:
           
           echo "=== Debug Info ==="
           echo "PWD: $(pwd)"
-          echo "WORKDIR: $(workspaces.source.path)/k8s/overlays/$(params.env)"
+          echo "WORKDIR: $(workspaces.manifests.path)/k8s/overlays/$(params.env)"
           echo "Environment: $(params.env)"
           echo "New Image: $(params.image)"
           echo ""
@@ -53,7 +53,7 @@ spec:
 
     - name: git-commit-push
       image: alpine/git
-      workingDir: $(workspaces.source.path)
+      workingDir: $(workspaces.manifests.path)
       env:
         - name: GIT_USER
           value: "ci-bot"
