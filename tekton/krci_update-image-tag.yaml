@@ -24,6 +24,7 @@ spec:
           
           echo "=== Debug Info ==="
           echo "PWD: $(pwd)"
+          echo "WORKDIR: $(workspaces.source.path)/k8s/overlays/$(params.env)"
           echo "Environment: $(params.env)"
           echo "New Image: $(params.image)"
           echo ""
