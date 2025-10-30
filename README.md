@@ -34,8 +34,8 @@
                 └──► Deploy to qa (3 replicas)
 ```
 
-### Project components 
-###### 1. GitHub Webhook → Tekton Trigger
+## Project components 
+### 1. GitHub Webhook → Tekton Trigger
 
 ***
 
@@ -49,7 +49,7 @@ The tekton-triggers-sa service processes it and launches the github-push-trigger
 
 bash test.sh
 
-###### 2. Tekton Trigger System
+### 2. Tekton Trigger System
 
 File: krci_trigger.yaml
 
@@ -73,7 +73,7 @@ krci_trigger_template.yaml
 
 Creates PipelineRun, passing parameters to the app-ci-pipeline pipeline.
 
-##### 3. Tekton Pipeline (CI)
+### 3. Tekton Pipeline (CI)
 
 File: krci_pipeline.yaml
 
@@ -92,7 +92,7 @@ Main tasks:
 Result:
 ArgoCD notices updates in the manifests repository and automatically updates the applications.
 
-##### 4. PersistentVolumeClaims
+### 4. PersistentVolumeClaims
 
 krci_pvc.yaml — workspace for application source code.
 
@@ -100,7 +100,7 @@ krci_manifest_pvc.yaml — workspace for manifest repository.
 
 Tekton uses PVC to store data between pipeline tasks.
 
-##### 5. Service Account and RBAC
+### 5. Service Account and RBAC
 
 Files:
 
@@ -114,7 +114,7 @@ Tekton Triggers access to create PipelineRun.
 
 Secure execution of all tasks with namespace-restricted permissions.
 
-##### 6. ArgoCD (CD)
+### 6. ArgoCD (CD)
 
 After completing the ArgoCD CI pipeline:
 
@@ -142,7 +142,7 @@ Step    Description
 6    Changes are committed to the manifests repository
 7    ArgoCD notices the update and applies the new versions to the cluster
 
-###### 🐳 Environment	Image Example
+### 🐳 Environment	Image Example
 
 dev	elpaso5701/gitops_demo:latest
 qa	elpaso5701/gitops_demo:f1eb375
