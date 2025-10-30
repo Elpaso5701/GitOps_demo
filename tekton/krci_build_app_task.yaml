@@ -10,7 +10,7 @@ spec:
       type: string  
     - name: DOCKERFILE
       description: Path to the Dockerfile to build.
-      default: .app/Dockerfile  
+      default: ./app/Dockerfile  
 
   workspaces:
     - name: source
@@ -46,7 +46,7 @@ spec:
       image: gcr.io/kaniko-project/executor:latest
       args:
          - --dockerfile=$(params.DOCKERFILE)
-         - --context=$(workspaces.source.path)
+         - --context=$(workspaces.source.path)/app
          - --destination=$(params.image)
          - --destination=$(params.image-latest)
          - --digest-file=$(results.IMAGE_DIGEST.path)
