@@ -32,8 +32,9 @@
                 │
                 ├──► Deploy to dev (1 replica)
                 └──► Deploy to qa (3 replicas)
+```
 
-### Project components           
+### Project components 
 ###### 1. GitHub Webhook → Tekton Trigger
 
 ***
@@ -141,7 +142,7 @@ Step    Description
 6    Changes are committed to the manifests repository
 7    ArgoCD notices the update and applies the new versions to the cluster
 
-🐳 Environment	Image Example
+###### 🐳 Environment	Image Example
 
 dev	elpaso5701/gitops_demo:latest
 qa	elpaso5701/gitops_demo:f1eb375
