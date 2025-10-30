@@ -10,7 +10,7 @@ spec:
       type: string  
     - name: DOCKERFILE
       description: Path to the Dockerfile to build.
-      default: ./app/Dockerfile  
+      default: Dockerfile  
 
   workspaces:
     - name: source
@@ -42,11 +42,11 @@ spec:
           cat /kaniko/.docker/config.json | head -c 500
      
     - name: build-and-push
-      workingDir: $(workspaces.source.path)
+      workingDir: $(workspaces.source.path)/app
       image: gcr.io/kaniko-project/executor:latest
       args:
          - --dockerfile=$(params.DOCKERFILE)
-         - --context=$(workspaces.source.path)/app
+         - --context=.
          - --destination=$(params.image)
          - --destination=$(params.image-latest)
          - --digest-file=$(results.IMAGE_DIGEST.path)
