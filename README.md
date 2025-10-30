@@ -51,7 +51,7 @@ bash test.sh
 
 ### 2. Tekton Trigger System
 
-File: krci_trigger.yaml
+**File: krci_trigger.yaml**
 
 Defines which trigger will fire when an event is received:
 
@@ -75,19 +75,19 @@ Creates PipelineRun, passing parameters to the app-ci-pipeline pipeline.
 
 ### 3. Tekton Pipeline (CI)
 
-File: krci_pipeline.yaml
+**File: krci_pipeline.yaml**
 
 Main tasks:
 
-🧹 clean-source / clean-manifests — cleaning the workspace.
+🧹 **clean-source / clean-manifests** — cleaning the workspace.
 
-📥 clone-app-repo / clone-manifests — cloning source code and manifests.
+📥 **clone-app-repo / clone-manifests** — cloning source code and manifests.
 
-🏗️ build — building and publishing a Docker image to DockerHub.
+🏗️ **build** — building and publishing a Docker image to DockerHub.
 
-🧩 update-dev / update-qa — updating deployment-patch.yaml for two environments (dev, qa) with a new image tag.
+🧩 **update-dev / update-qa** — updating deployment-patch.yaml for two environments (dev, qa) with a new image tag.
 
-🔁 git push — committing changes back to the manifests repository.
+🔁 **git push** — committing changes back to the manifests repository.
 
 Result:
 ArgoCD notices updates in the manifests repository and automatically updates the applications.
@@ -104,9 +104,9 @@ Tekton uses PVC to store data between pipeline tasks.
 
 Files:
 
-krci_service-account.yaml
+**krci_service-account.yaml**
 
-krci_role_rolebinding.yaml
+**krci_role_rolebinding.yaml**
 
 Provide:
 
@@ -124,13 +124,13 @@ Automatically synchronizes the cluster state.
 
 Deploys the application in two environments:
 
-dev → 1 replica
+**dev → 1 replica**
 
-qa → 3 replicas
+**qa → 3 replicas**
 
 replicas
 
-🧠 How it works step by step
+##### 🧠 How it works step by step
 
 Step    Description
 
@@ -144,21 +144,21 @@ Step    Description
 
 ### 🐳 Environment	Image Example
 
-dev	elpaso5701/gitops_demo:latest
-qa	elpaso5701/gitops_demo:f1eb375
+**dev	elpaso5701/gitops_demo:latest**
+**qa	elpaso5701/gitops_demo:f1eb375**
 
 🧰 Requirements
 
-Kubernetes cluster (e.g., Minikube)
+**Kubernetes cluster (e.g., Minikube)**
 
-Tekton Pipelines + Tekton Triggers
+**Tekton Pipelines + Tekton Triggers**
 
-ArgoCD
+**ArgoCD**
 
-DockerHub account
+**DockerHub account**
 
-GitHub repositories:
+**GitHub repositories:**
 
-GitOps_demo (application code)
+**GitOps_demo (application code)**
 
-manifests (Kubernetes manifests)
+**manifests (Kubernetes manifests)**
