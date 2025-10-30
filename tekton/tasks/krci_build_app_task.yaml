@@ -54,12 +54,4 @@ spec:
       securityContext:
         runAsUser: 0
       
-      
-    # - name: write-url
-    #   image: docker.io/bash:5.3.0@sha256:6a3e1c2ddbdee552cd69ad8244eee84ad6cc00049c338f700ef5ef247be16f7b
-    #   script: |
-    #     set -e
-    #     image="$(params.image)"
-    #     echo -n "${image}" | tee "$(results.IMAGE_URL.path)"    
-    #     echo -n "$(params.image-latest)" | tee "$(results.IMAGE_URL_LATEST.path)"      
           

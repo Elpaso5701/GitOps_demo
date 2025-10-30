@@ -14,11 +14,8 @@ spec:
         set -e
         
         echo "=== Cleaning workspace: $(workspaces.workspace.path) ==="
-        
         rm -rf $(workspaces.workspace.path)/* 2>/dev/null || true
-        
         rm -rf $(workspaces.workspace.path)/.[!.]* 2>/dev/null || true
         rm -rf $(workspaces.workspace.path)/..?* 2>/dev/null || true
-        
         echo "✅ Workspace cleaned successfully"
         ls -la $(workspaces.workspace.path) || echo "Empty"
