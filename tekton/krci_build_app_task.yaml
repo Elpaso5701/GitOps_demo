@@ -50,6 +50,7 @@ spec:
          - --destination=$(params.image)
          - --destination=$(params.image-latest)
          - --digest-file=$(results.IMAGE_DIGEST.path)
+         - --verbosity=info
       securityContext:
         runAsUser: 0
       
